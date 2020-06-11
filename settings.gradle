@@ -1,2 +1,3 @@
 rootProject.name='Clibrary'
 include ':app'
+include ':app:clutils'
