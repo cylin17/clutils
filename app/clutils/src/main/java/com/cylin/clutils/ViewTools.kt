@@ -2,7 +2,7 @@ package com.cylin.clutils
 
 import android.widget.EditText
 
-fun EditText.textString(): String {
+fun EditText.text2String(): String {
     return text.toString()
 }
 
