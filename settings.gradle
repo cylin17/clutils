@@ -1,0 +1,3 @@
+rootProject.name='ClutilsCompat'
+include ':app'
+include ':app:clutils'
