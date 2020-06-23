@@ -10,5 +10,5 @@ fun EditText.isTextEmpty(): Boolean {
     return text.trim().isEmpty()
 }
 
-internal val Any.TAG
+val Any.TAG
     get() = this.javaClass.simpleName
