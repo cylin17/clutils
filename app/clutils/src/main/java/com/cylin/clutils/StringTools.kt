@@ -6,7 +6,8 @@ import java.security.MessageDigest
 
 /**
  * 將字串加密成 MD5
- */fun String.md5(): String {
+ */
+fun String.md5(): String {
     return hashString(this, "MD5")
 }
 
@@ -19,9 +20,9 @@ fun String.sha256(): String {
 
 private fun hashString(input: String, algorithm: String): String {
     return MessageDigest
-            .getInstance(algorithm)
-            .digest(input.toByteArray())
-            .fold("", { str, it -> str + "%02x".format(it) })
+        .getInstance(algorithm)
+        .digest(input.toByteArray())
+        .fold("", { str, it -> str + "%02x".format(it) })
 }
 
 /**
