@@ -2,6 +2,7 @@ package com.cylin.clutils
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.util.Base64
 import java.security.MessageDigest
 
 /**
@@ -30,6 +31,20 @@ private fun hashString(input: String, algorithm: String): String {
  */
 fun String.urlCheck(): String {
     return if (this.endsWith("/", false)) this else "$this/"
+}
+
+/**
+ * Decode base64 string.
+ */
+fun String.decodeBase64(): String {
+    return String(Base64.decode(this, Base64.DEFAULT))
+}
+
+/**
+ * encode to base64 string.
+ */
+fun String.base64(): String {
+    return Base64.encodeToString(this.toByteArray(), Base64.DEFAULT)
 }
 
 /**
