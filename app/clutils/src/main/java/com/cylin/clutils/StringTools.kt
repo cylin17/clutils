@@ -1,5 +1,7 @@
 package com.cylin.clutils
 
+import android.content.ClipboardManager
+import android.content.Context
 import java.security.MessageDigest
 
 /**
@@ -27,4 +29,21 @@ private fun hashString(input: String, algorithm: String): String {
  */
 fun String.urlCheck(): String {
     return if (this.endsWith("/", false)) this else "$this/"
+}
+
+/**
+ * 複製文字到剪貼簿
+ */
+fun String.copy(context: Context): Boolean {
+    try {
+        if (this.isNullOrEmpty()) {
+            return false
+        }
+
+        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        cm.text = this
+        return true
+    } catch (e: Exception) {
+        return false
+    }
 }
