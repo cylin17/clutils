@@ -13,22 +13,22 @@ import java.util.List;
 
 import static android.util.Log.d;
 
-public class CameraUtil {
+public class CameraUtils {
 
-    private static final String TAG = CameraUtil.class.getSimpleName();
+    private static final String TAG = CameraUtils.class.getSimpleName();
     //降序
     private CameraDropSizeComparator dropSizeComparator = new CameraDropSizeComparator();
     //升序
     private CameraAscendSizeComparator ascendSizeComparator = new CameraAscendSizeComparator();
-    private static CameraUtil myCamPara = null;
+    private static CameraUtils myCamPara = null;
 
-    private CameraUtil() {
+    private CameraUtils() {
 
     }
 
-    public static CameraUtil getInstance() {
+    public static CameraUtils getInstance() {
         if (myCamPara == null) {
-            myCamPara = new CameraUtil();
+            myCamPara = new CameraUtils();
             return myCamPara;
         } else {
             return myCamPara;
