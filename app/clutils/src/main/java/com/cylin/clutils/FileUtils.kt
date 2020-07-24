@@ -7,6 +7,7 @@ import android.net.Uri
 
 object FileUtils {
 
+    @JvmStatic
     fun openPdfWith(activity: Activity, data: Uri) {
         val target = Intent(Intent.ACTION_VIEW)
         target.setDataAndType(data, "application/pdf")

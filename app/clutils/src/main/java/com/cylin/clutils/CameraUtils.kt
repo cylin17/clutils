@@ -16,6 +16,8 @@ object CameraUtils {
 
     // 升序
     private val ascendSizeComparator = CameraAscendSizeComparator()
+
+    @JvmStatic
     fun getRecorderRotation(cameraId: Int): Int {
         val info = CameraInfo()
         Camera.getCameraInfo(cameraId, info)
@@ -29,6 +31,7 @@ object CameraUtils {
      * @param minHeight
      * @return
      */
+    @JvmStatic
     fun getPropVideoSize(
         list: List<Camera.Size>,
         minHeight: Int
@@ -54,6 +57,7 @@ object CameraUtils {
      * @param cameraId
      * @param camera
      */
+    @JvmStatic
     fun setCameraDisplayOrientation(
         activity: Activity,
         cameraId: Int, camera: Camera
@@ -79,7 +83,8 @@ object CameraUtils {
         camera.setDisplayOrientation(result)
     }
 
-    fun setTakePicktrueOrientation(id: Int, bitmap: Bitmap): Bitmap {
+    @JvmStatic
+    fun setTakePictureOrientation(id: Int, bitmap: Bitmap): Bitmap {
         var bitmap = bitmap
         val info = CameraInfo()
         Camera.getCameraInfo(id, info)
@@ -93,6 +98,7 @@ object CameraUtils {
      * @param angle 旋转角度
      * @return bitmap 图片
      */
+    @JvmStatic
     fun rotatingImageView(id: Int, angle: Int, bitmap: Bitmap): Bitmap {
         //旋转图片 动作
         val matrix = Matrix()
@@ -115,10 +121,8 @@ object CameraUtils {
      * @param minWidth
      * @return
      */
-    fun getPropPreviewSize(
-        list: List<Camera.Size>,
-        minWidth: Int
-    ): Camera.Size {
+    @JvmStatic
+    fun getPropPreviewSize(list: List<Camera.Size>, minWidth: Int): Camera.Size {
         Collections.sort(list, ascendSizeComparator)
         var i = 0
         for (s in list) {
@@ -140,10 +144,8 @@ object CameraUtils {
      * @param minWidth
      * @return
      */
-    fun getPropPictureSize(
-        list: List<Camera.Size>,
-        minWidth: Int
-    ): Camera.Size {
+    @JvmStatic
+    fun getPropPictureSize(list: List<Camera.Size>, minWidth: Int): Camera.Size {
         Collections.sort(list, ascendSizeComparator)
         var i = 0
         for (s in list) {
@@ -165,10 +167,8 @@ object CameraUtils {
      * @param minHeight
      * @return
      */
-    fun getPropSizeForHeight(
-        list: List<Camera.Size>,
-        minHeight: Int
-    ): Camera.Size {
+    @JvmStatic
+    fun getPropSizeForHeight(list: List<Camera.Size>, minHeight: Int): Camera.Size {
         Collections.sort(
             list,
             CameraAscendSizeComparatorForHeight()
@@ -188,34 +188,31 @@ object CameraUtils {
     }
 
     //升序 按照高度
-    class CameraAscendSizeComparatorForHeight :
-        Comparator<Camera.Size> {
-        override fun compare(
-            lhs: Camera.Size,
-            rhs: Camera.Size
-        ): Int {
-            return if (lhs.height == rhs.height) {
-                0
-            } else if (lhs.height > rhs.height) {
-                1
-            } else {
-                -1
+    class CameraAscendSizeComparatorForHeight : Comparator<Camera.Size> {
+        override fun compare(lhs: Camera.Size, rhs: Camera.Size): Int {
+            return when {
+                lhs.height == rhs.height -> {
+                    0
+                }
+                lhs.height > rhs.height -> {
+                    1
+                }
+                else -> {
+                    -1
+                }
             }
         }
     }
 
+    @JvmStatic
     fun equalRate(s: Camera.Size, rate: Float): Boolean {
         val r = s.width.toFloat() / s.height.toFloat()
         return Math.abs(r - rate) <= 0.03
     }
 
     //降序
-    class CameraDropSizeComparator :
-        Comparator<Camera.Size> {
-        override fun compare(
-            lhs: Camera.Size,
-            rhs: Camera.Size
-        ): Int {
+    class CameraDropSizeComparator : Comparator<Camera.Size> {
+        override fun compare(lhs: Camera.Size, rhs: Camera.Size): Int {
             return when {
                 lhs.width == rhs.width -> {
                     0
@@ -231,12 +228,8 @@ object CameraUtils {
     }
 
     //升序
-    class CameraAscendSizeComparator :
-        Comparator<Camera.Size> {
-        override fun compare(
-            lhs: Camera.Size,
-            rhs: Camera.Size
-        ): Int {
+    class CameraAscendSizeComparator : Comparator<Camera.Size> {
+        override fun compare(lhs: Camera.Size, rhs: Camera.Size): Int {
             return when {
                 lhs.width == rhs.width -> {
                     0
@@ -257,8 +250,7 @@ object CameraUtils {
      * @param params
      */
     fun printSupportPreviewSize(params: Camera.Parameters) {
-        val previewSizes =
-            params.supportedPreviewSizes
+        val previewSizes = params.supportedPreviewSizes
         for (i in previewSizes.indices) {
             val size = previewSizes[i]
             Log.d(TAG, ">> printSupportPreviewSize: " + size.width + ", " + size.height)
@@ -270,9 +262,9 @@ object CameraUtils {
      *
      * @param params
      */
+    @JvmStatic
     fun printSupportPictureSize(params: Camera.Parameters) {
-        val pictureSizes =
-            params.supportedPictureSizes
+        val pictureSizes = params.supportedPictureSizes
         for (i in pictureSizes.indices) {
             val size = pictureSizes[i]
             Log.d(TAG, ">> printSupportPictureSize: " + size.width + ", " + size.height)
@@ -284,6 +276,7 @@ object CameraUtils {
      *
      * @param params
      */
+    @JvmStatic
     fun printSupportFocusMode(params: Camera.Parameters) {
         val focusModes = params.supportedFocusModes
         for (mode in focusModes) {
@@ -296,6 +289,7 @@ object CameraUtils {
      *
      * @param mCamera
      */
+    @JvmStatic
     fun turnLightOn(mCamera: Camera?) {
         if (mCamera == null) {
             return
@@ -322,6 +316,7 @@ object CameraUtils {
      *
      * @param mCamera
      */
+    @JvmStatic
     fun turnLightAuto(mCamera: Camera?) {
         if (mCamera == null) {
             return
@@ -348,6 +343,7 @@ object CameraUtils {
      *
      * @param mCamera
      */
+    @JvmStatic
     fun turnLightOff(mCamera: Camera?) {
         if (mCamera == null) {
             return

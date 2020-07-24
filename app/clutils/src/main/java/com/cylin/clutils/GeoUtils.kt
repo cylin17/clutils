@@ -19,6 +19,7 @@ object GeoUtils {
 
     private var locationManager: LocationManager? = null
 
+    @JvmStatic
     fun setLocationUpdate(@NonNull context: Context, type: GeoType, locationListener: LocationListener) {
         if (locationManager == null) {
             locationManager =
@@ -33,10 +34,12 @@ object GeoUtils {
         }
     }
 
+    @JvmStatic
     fun removeUpdate(@NonNull locationListener: LocationListener) {
         locationManager?.removeUpdates(locationListener)
     }
 
+    @JvmStatic
     fun geo2Address(context: Context, lat: Double, lon: Double): List<Address> {
         var addresses: List<Address> = ArrayList()
         val geocoder = Geocoder(context, Locale.getDefault())
@@ -51,11 +54,13 @@ object GeoUtils {
         }
     }
 
+    @JvmStatic
     fun address2Geo(context: Context, address: String, maxResults: Int): List<Address> {
         val coder = Geocoder(context)
         return coder.getFromLocationName(address, maxResults)
     }
 
+    @JvmStatic
     fun convertPostcode2Three(postcode: String): String {
         return if (postcode.length > 3) {
             postcode.substring(0, 3)

@@ -95,6 +95,7 @@ object PictureUtil {
      * @param sourceUri 圖片來源路徑, scheme 不限
      * @param targetUri 儲存路徑, scheme 限定 "file:"
      */
+    @JvmStatic
     fun dispatchCropPicture(activity: Activity, sourceUri: Uri, targetUri: Uri, fragment: Fragment? = null) {
 
         val intent = Intent("com.android.camera.action.CROP")
@@ -139,6 +140,7 @@ object PictureUtil {
      * @param context context
      * @param file custom file or use default
      */
+    @JvmStatic
     fun getFileUri(context: Context, file: File = getImageFile(context)): Uri {
 
         // 這是File的 path string: /data/user/0/packageName/files/file/image123.jpg
@@ -156,6 +158,7 @@ object PictureUtil {
      * @param context context
      * @param imageName fileName, with ".jpg"
      */
+    @JvmStatic
     fun getImageFile(context: Context, imageName: String = IMAGE_NAME): File {
 
         val filePath = "${context.filesDir}$FILE_PATH$imageName"
@@ -177,11 +180,8 @@ object PictureUtil {
      * @param imgFileName 檔案名稱
      * @return 返回絕對路徑的 Uri
      */
-    fun getAbsolutePathUri(
-        context: Context,
-        dirName: String = "cropDir",
-        imgFileName: String = "cropImage.jpg"
-    ): Uri {
+    @JvmStatic
+    fun getAbsolutePathUri(context: Context, dirName: String = "cropDir", imgFileName: String = "cropImage.jpg"): Uri {
 
         return Uri.fromFile(
             File(context.getExternalFilesDir(dirName), "/$imgFileName")

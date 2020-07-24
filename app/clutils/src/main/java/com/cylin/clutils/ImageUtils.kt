@@ -24,6 +24,7 @@ import java.util.*
 
 object ImageUtils {
 
+    @JvmStatic
     fun takePhotos(activity: Activity, requestCode: Int) {
         val outputImage = File(
             imagePath,
@@ -43,6 +44,7 @@ object ImageUtils {
         activity.startActivityForResult(intent, requestCode)
     }
 
+    @JvmStatic
     fun pickImages(activity: Activity, requestCode: Int, multiple: Boolean) {
         val intent = Intent()
         intent.type = "image/*"
@@ -60,6 +62,7 @@ object ImageUtils {
      * @param image
      * @return
      */
+    @JvmStatic
     fun saveImage(context: Context, image: Bitmap?): String? {
         var uri: String? = null
         if (image != null) {
@@ -75,6 +78,7 @@ object ImageUtils {
         return uri
     }
 
+    @JvmStatic
     fun saveImage2Gallery(context: Context, bmp: Bitmap): String? {
 
         // 首先保存圖片
@@ -113,6 +117,7 @@ object ImageUtils {
         return null
     }
 
+    @JvmStatic
     fun takeSnapshot(v: View): Bitmap {
         v.isDrawingCacheEnabled = true
         v.buildDrawingCache(true)
@@ -121,6 +126,7 @@ object ImageUtils {
         return b
     }
 
+    @JvmStatic
     fun encodeImage(bitmap: Bitmap): String {
         var encodedImage = ""
         try {
@@ -140,6 +146,7 @@ object ImageUtils {
         return encodedImage
     }
 
+    @JvmStatic
     fun rotateBitmap(original: Bitmap, degrees: Float): Bitmap {
         val width = original.width
         val height = original.height
@@ -148,11 +155,8 @@ object ImageUtils {
         return Bitmap.createBitmap(original, 0, 0, width, height, matrix, true)
     }
 
-    fun saveImageView(
-        context: Context,
-        view: ImageView,
-        isRotated: Boolean
-    ): String? {
+    @JvmStatic
+    fun saveImageView(context: Context, view: ImageView, isRotated: Boolean): String? {
         view.buildDrawingCache()
         var bmp = view.drawingCache
         if (isRotated) {
@@ -182,18 +186,16 @@ object ImageUtils {
 //        }
     }
 
-    val imagePath: File
+    private val imagePath: File
         get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
 
+    @JvmStatic
     fun getRealPath(context: Context, imgUri: String): String? {
         return getRealPath(context, imgUri, false)
     }
 
-    fun getRealPath(
-        context: Context,
-        imgUri: String,
-        showLog: Boolean
-    ): String? {
+    @JvmStatic
+    fun getRealPath(context: Context, imgUri: String, showLog: Boolean): String? {
         if (showLog) Log.d(TAG, ">> before getRealPath: $imgUri")
         var newPath: String? = imgUri
         if (imgUri.contains("content://com.android.")) {
@@ -217,12 +219,7 @@ object ImageUtils {
         return "com.android.providers.media.documents" == uri.authority
     }
 
-    private fun getDataColumn(
-        context: Context,
-        uri: Uri?,
-        selection: String?,
-        selectionArgs: Array<String>?
-    ): String? {
+    private fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
         var cursor: Cursor? = null
         val column = "_data"
         val projection = arrayOf(column)
@@ -239,10 +236,8 @@ object ImageUtils {
         return null
     }
 
-    fun convertImagePath(
-        context: Context,
-        imageUri: String?
-    ): String? {
+    @JvmStatic
+    fun convertImagePath(context: Context, imageUri: String?): String? {
         val uri = Uri.parse(imageUri)
         if (ContentResolver.SCHEME_CONTENT == uri.scheme && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (DocumentsContract.isDocumentUri(context, uri)) {
@@ -288,30 +283,26 @@ object ImageUtils {
         return "/storage/" + DocumentsContract.getDocumentId(uri).replace(":", "/")
     }
 
-    fun getRealPathFromURI(
-        context: Context,
-        contentURI: String?
-    ): String? {
+    @JvmStatic
+    fun getRealPathFromURI(context: Context, contentURI: String?): String? {
         val contentUri = Uri.parse(contentURI)
         val cursor =
             context.contentResolver.query(contentUri, null, null, null, null)
-        return try {
+        return cursor.use { cursor ->
             if (cursor == null) {
                 contentUri.path
             } else {
                 var res: String? = null
                 if (cursor.moveToFirst()) {
-                    val column_index =
-                        cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                    res = cursor.getString(column_index)
+                    val columnIndex =cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                    res = cursor.getString(columnIndex)
                 }
                 res
             }
-        } finally {
-            cursor?.close()
         }
     }
 
+    @JvmStatic
     fun getImageSize(uri: Uri): HashMap<String, Int> {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
