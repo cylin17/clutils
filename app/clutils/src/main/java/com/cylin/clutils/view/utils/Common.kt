@@ -1,10 +1,11 @@
-package com.cylin.clutils
+package com.cylin.clutils.view.utils
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.support.annotation.DimenRes
 import android.view.View
 import android.widget.EditText
+import java.util.*
 
 fun EditText.text2String(): String {
     return text.toString()
@@ -13,9 +14,6 @@ fun EditText.text2String(): String {
 fun EditText.isTextEmpty(): Boolean {
     return text.trim().isEmpty()
 }
-
-val Any.TAG: String
-    get() = this.javaClass.simpleName
 
 //returns dip(dp) dimension value in pixels
 fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()

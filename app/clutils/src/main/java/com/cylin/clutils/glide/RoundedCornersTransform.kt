@@ -1,4 +1,4 @@
-package com.cylin.clutils
+package com.cylin.clutils.glide
 
 import android.content.Context
 import android.graphics.*
