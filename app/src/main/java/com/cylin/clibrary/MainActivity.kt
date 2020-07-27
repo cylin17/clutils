@@ -1,4 +1,4 @@
-package com.cylin.clibrary
+package com.cylin.clutilsx
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

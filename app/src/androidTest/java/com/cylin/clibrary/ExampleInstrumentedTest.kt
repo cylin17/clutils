@@ -1,4 +1,4 @@
-package com.cylin.clibrary
+package com.cylin.clutilsx
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.cylin.clibrary", appContext.packageName)
+        assertEquals("com.cylin.clutilsx", appContext.packageName)
     }
 }
