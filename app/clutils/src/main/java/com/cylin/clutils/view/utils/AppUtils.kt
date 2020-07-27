@@ -78,7 +78,7 @@ object AppUtils {
     fun installPackage(context: Context, file: String?) {
         val contentUri = FileProvider.getUriForFile(
             context,
-            "com.excelutiontech.roadreporter.fileProvider",
+            "${context.packageName}.fileProvider",
             File(file)
         )
         val installIntent = Intent(Intent.ACTION_VIEW)
