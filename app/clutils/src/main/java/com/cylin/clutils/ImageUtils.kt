@@ -186,7 +186,8 @@ object ImageUtils {
 //        }
     }
 
-    private val imagePath: File
+    @JvmStatic
+    val imagePath: File
         get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
 
     @JvmStatic
