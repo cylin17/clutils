@@ -23,7 +23,7 @@ class FantasticPicture(private val mContext: Context) {
 
     companion object {
 
-        const val TAG = "FantasticPicture"
+        private val TAG = FantasticPicture::class.java.simpleName
 
         /**
          * 預設的圖片尺寸像素限制
@@ -73,7 +73,6 @@ class FantasticPicture(private val mContext: Context) {
      * 是否輸出正方形, 若為是, 會自動擷取長方形中間的正方形, 預設不使用
      */
     private var mCutSquare = CUT_SQUARE
-
 
     /**
      * 設定限制圖片像素的尺寸大小限制, 單位: pixel
@@ -135,7 +134,6 @@ class FantasticPicture(private val mContext: Context) {
         return null
     }
 
-
     /**
      * 透過Uri先決定壓縮尺寸
      * 再生成壓縮圖片
@@ -144,7 +142,7 @@ class FantasticPicture(private val mContext: Context) {
      */
     @Throws(IOException::class)
     private fun resizedBitmapFormUri(
-            uri: Uri
+        uri: Uri
     ): Bitmap? {
         var input = mContext.contentResolver.openInputStream(uri)
         val onlyBoundsOptions = BitmapFactory.Options()
@@ -159,7 +157,10 @@ class FantasticPicture(private val mContext: Context) {
         }
         Log.i(Companion.TAG, "==============resizedBitmapFormUri()==============")
         Log.i(Companion.TAG, "壓縮前的圖片尺寸為:\n")
-        Log.i(Companion.TAG, "寬: " + onlyBoundsOptions.outWidth + ",\t高: " + onlyBoundsOptions.outHeight)
+        Log.i(
+            Companion.TAG,
+            "寬: " + onlyBoundsOptions.outWidth + ",\t高: " + onlyBoundsOptions.outHeight
+        )
         // 設定解析度限制
         // 設定高度限制, 1200f的代表意義為 限制圖片尺寸在 1200~2400 之間
         val limitHeight = mPixelLimit.toFloat()
@@ -167,7 +168,7 @@ class FantasticPicture(private val mContext: Context) {
         val limitWidth = mPixelLimit.toFloat()
         // 縮放比。由於是固定比例縮放，只用高或者寬其中一個數據進行計算即可
         val ratio =
-                getRatioWithSmallSide(originalWidth, originalHeight, limitWidth, limitHeight)
+            getRatioWithSmallSide(originalWidth, originalHeight, limitWidth, limitHeight)
         val bitmapOptions = BitmapFactory.Options()
         // 設置縮放比例, ratio == 1 表示不縮放
         // For example: inSampleSize = 2, 代表寬高都縮減為1/2, pixel縮減為1/4
@@ -199,7 +200,7 @@ class FantasticPicture(private val mContext: Context) {
         Log.i(Companion.TAG, "==============compressBitmap()==============")
         Log.i(
             Companion.TAG,
-                "quality = " + quality + ", 不經壓縮的檔案大小為: " + byteArrayOutputStream.toByteArray().size / 1024 + "KB"
+            "quality = " + quality + ", 不經壓縮的檔案大小為: " + byteArrayOutputStream.toByteArray().size / 1024 + "KB"
         )
         // while 判斷, 如果壓縮後圖片大於100KB則繼續壓縮
         while (byteArrayOutputStream.toByteArray().size / 1024 > mSizeLimit) { // 清空outputStream重來一遍
@@ -209,11 +210,11 @@ class FantasticPicture(private val mContext: Context) {
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
             Log.i(
                 Companion.TAG,
-                    "quality = " + quality + ", 壓縮後的檔案大小為: " + byteArrayOutputStream.toByteArray().size / 1024 + "KB"
+                "quality = " + quality + ", 壓縮後的檔案大小為: " + byteArrayOutputStream.toByteArray().size / 1024 + "KB"
             )
         }
         val byteArrayInputStream =
-                ByteArrayInputStream(byteArrayOutputStream.toByteArray())
+            ByteArrayInputStream(byteArrayOutputStream.toByteArray())
         // 把ByteArrayInputStream數據生成圖片
         return BitmapFactory.decodeStream(byteArrayInputStream, null, null)
     }
@@ -270,11 +271,11 @@ class FantasticPicture(private val mContext: Context) {
         Log.i(Companion.TAG, "==============cutSquareBitmap()==============")
         Log.i(Companion.TAG, "切成指定大小, pixelLimit: $mPixelLimit")
         return Bitmap.createBitmap(
-                bitmap,
-                0,
-                0,
-                mPixelLimit,
-                mPixelLimit
+            bitmap,
+            0,
+            0,
+            mPixelLimit,
+            mPixelLimit
         )
     }
 
@@ -289,13 +290,13 @@ class FantasticPicture(private val mContext: Context) {
         val matrix = Matrix()
         matrix.postRotate(degrees)
         return Bitmap.createBitmap(
-                bitmap,
-                0,
-                0,
-                bitmap.width,
-                bitmap.height,
-                matrix,
-                true
+            bitmap,
+            0,
+            0,
+            bitmap.width,
+            bitmap.height,
+            matrix,
+            true
         )
     }
 
@@ -308,23 +309,23 @@ class FantasticPicture(private val mContext: Context) {
      * @return 處理完畢的圖檔
      */
     private fun flip(
-            bitmap: Bitmap,
-            horizontal: Boolean,
-            vertical: Boolean
+        bitmap: Bitmap,
+        horizontal: Boolean,
+        vertical: Boolean
     ): Bitmap? {
         val matrix = Matrix()
         matrix.preScale(
-                if (horizontal) (-1).toFloat() else 1.toFloat(),
-                if (vertical) (-1).toFloat() else 1.toFloat()
+            if (horizontal) (-1).toFloat() else 1.toFloat(),
+            if (vertical) (-1).toFloat() else 1.toFloat()
         )
         return Bitmap.createBitmap(
-                bitmap,
-                0,
-                0,
-                bitmap.width,
-                bitmap.height,
-                matrix,
-                true
+            bitmap,
+            0,
+            0,
+            bitmap.width,
+            bitmap.height,
+            matrix,
+            true
         )
     }
 
@@ -338,8 +339,8 @@ class FantasticPicture(private val mContext: Context) {
      * @return 縮放比例
      */
     private fun getRatioWithLargeSide(
-            width: Int, height: Int, limitWidth: Float,
-            limitHeight: Float
+        width: Int, height: Int, limitWidth: Float,
+        limitHeight: Float
     ): Int {
         var ratio = 1
         if (width > height && width > limitWidth) { // 如果寬度大的話，根據寬度固定大小縮放
@@ -348,7 +349,7 @@ class FantasticPicture(private val mContext: Context) {
             ratio = (height / limitHeight).toInt()
         }
         // 上述規則代表寬高大於兩倍以上才會進行壓縮, 兩倍以內不會
-// 因為兩倍以內的ratio都還是1.xx, 取整數為1
+        // 因為兩倍以內的ratio都還是1.xx, 取整數為1
         if (ratio <= 0) {
             ratio = 1
         }
@@ -365,8 +366,8 @@ class FantasticPicture(private val mContext: Context) {
      * @return 縮放比例
      */
     private fun getRatioWithSmallSide(
-            width: Int, height: Int, limitWidth: Float,
-            limitHeight: Float
+        width: Int, height: Int, limitWidth: Float,
+        limitHeight: Float
     ): Int {
         var ratio = 1
         if (width < height && width > limitWidth) { // 如果寬度大的話，根據寬度固定大小縮放

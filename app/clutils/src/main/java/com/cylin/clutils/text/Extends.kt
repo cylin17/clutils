@@ -1,4 +1,4 @@
-package com.cylin.clutils
+package com.cylin.clutils.text
 
 import android.content.ClipboardManager
 import android.content.Context

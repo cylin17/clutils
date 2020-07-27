@@ -7,7 +7,8 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.provider.MediaStore
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import java.io.File
 
 /**
@@ -47,13 +48,12 @@ object PictureUtil {
      * 要手動去指定的 Uri 讀取圖片, 但相片編輯器可能無法取得該圖片權限
      */
     @JvmStatic
-    fun dispatchTakePictureIntent(activity: Activity) {
+    fun dispatchTakePictureIntent(activity: Activity, fragment: Fragment? = null) {
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         // Ensure that there's a camera activity to handle the intent
-        val list: List<ResolveInfo> =
-                activity.packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        val list: List<ResolveInfo> = activity.packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
 
         if (list.isNotEmpty()) {
 
@@ -63,7 +63,11 @@ object PictureUtil {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, this)
             }
             // Launching the Intent
-            activity.startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE)
+            if (fragment == null) {
+                activity.startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE)
+            } else {
+                fragment.startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE)
+            }
         }
     }
 
@@ -71,12 +75,18 @@ object PictureUtil {
      * 從相簿選擇圖片
      */
     @JvmStatic
-    fun dispatchPickFromGalleryIntent(activity: Activity) { // Create an Intent with action as ACTION_PICK
+    fun dispatchPickFromGalleryIntent(activity: Activity, fragment: Fragment? = null) {
+
+        // Create an Intent with action as ACTION_PICK
         val intent = Intent(Intent.ACTION_PICK)
         // Sets the type as image/*. This ensures only components of type image are selected
         intent.type = "image/*"
         // Launching the Intent
-        activity.startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        if (fragment == null) {
+            activity.startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        } else {
+            fragment.startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        }
     }
 
     /**
@@ -85,7 +95,8 @@ object PictureUtil {
      * @param sourceUri 圖片來源路徑, scheme 不限
      * @param targetUri 儲存路徑, scheme 限定 "file:"
      */
-    fun dispatchCropPicture(activity: Activity, sourceUri: Uri, targetUri: Uri) {
+    @JvmStatic
+    fun dispatchCropPicture(activity: Activity, sourceUri: Uri, targetUri: Uri, fragment: Fragment? = null) {
 
         val intent = Intent("com.android.camera.action.CROP")
         // 輸入圖片來源
@@ -96,8 +107,8 @@ object PictureUtil {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, targetUri)
 
         intent.addFlags(
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    or Intent.FLAG_GRANT_READ_URI_PERMISSION
         )
 
         // aspectX aspectY 是宽高的比例
@@ -115,7 +126,11 @@ object PictureUtil {
 
         if (list.isNotEmpty()) {
             // Launching the Intent
-            activity.startActivityForResult(intent, CROP_REQUEST_CODE)
+            if (fragment == null) {
+                activity.startActivityForResult(intent, CROP_REQUEST_CODE)
+            } else {
+                fragment.startActivityForResult(intent, CROP_REQUEST_CODE)
+            }
         }
     }
 
@@ -125,14 +140,15 @@ object PictureUtil {
      * @param context context
      * @param file custom file or use default
      */
+    @JvmStatic
     fun getFileUri(context: Context, file: File = getImageFile(context)): Uri {
 
         // 這是File的 path string: /data/user/0/packageName/files/file/image123.jpg
         // 這是Uri 的 path string: /file_path/image123.jpg
         return FileProvider.getUriForFile(
-                context,
-                context.packageName + PROVIDER,
-                file
+            context,
+            context.packageName + PROVIDER,
+            file
         )
     }
 
@@ -142,6 +158,7 @@ object PictureUtil {
      * @param context context
      * @param imageName fileName, with ".jpg"
      */
+    @JvmStatic
     fun getImageFile(context: Context, imageName: String = IMAGE_NAME): File {
 
         val filePath = "${context.filesDir}$FILE_PATH$imageName"
@@ -163,14 +180,11 @@ object PictureUtil {
      * @param imgFileName 檔案名稱
      * @return 返回絕對路徑的 Uri
      */
-    fun getAbsolutePathUri(
-            context: Context,
-            dirName: String = "cropDir",
-            imgFileName: String = "cropImage.jpg"
-    ): Uri {
+    @JvmStatic
+    fun getAbsolutePathUri(context: Context, dirName: String = "cropDir", imgFileName: String = "cropImage.jpg"): Uri {
 
         return Uri.fromFile(
-                File(context.getExternalFilesDir(dirName), "/$imgFileName")
+            File(context.getExternalFilesDir(dirName), "/$imgFileName")
         )
     }
 }
