@@ -26,6 +26,24 @@ object AppUtils {
         )
     }
 
+    fun hasPermission(context: Context, vararg permissions: String): Boolean {
+        for (permission in permissions) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun requestPermissions(activity: Activity, vararg permissions: String, reqCode: Int) {
+        Log.i(TAG, ">> Request permissions: $permissions")
+        ActivityCompat.requestPermissions(activity, permissions, reqCode)
+    }
+
     fun setupPermissions(activity: Activity, permission: String, reqCode: Int) {
         val result = ContextCompat.checkSelfPermission(activity.application, permission)
         if (result != PackageManager.PERMISSION_GRANTED) {
@@ -36,21 +54,6 @@ object AppUtils {
             activity.onRequestPermissionsResult(
                 reqCode,
                 arrayOf(permission),
-                intArrayOf(PackageManager.PERMISSION_GRANTED)
-            )
-        }
-    }
-
-    fun setupPermissions(activity: Activity, permission: Array<String?>, reqCode: Int) {
-        val result = ContextCompat.checkSelfPermission(activity.application, permission[0]!!)
-        if (result != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, ">> Permission denied: $permission")
-            ActivityCompat.requestPermissions(activity, permission, reqCode)
-        } else {
-            Log.i(TAG, ">> Permission has been denied by user: $permission")
-            activity.onRequestPermissionsResult(
-                reqCode,
-                permission,
                 intArrayOf(PackageManager.PERMISSION_GRANTED)
             )
         }
