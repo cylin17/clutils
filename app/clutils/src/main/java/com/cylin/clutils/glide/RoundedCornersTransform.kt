@@ -18,10 +18,10 @@ class RoundedCornersTransform(context: Context, radius: Float): Transformation<B
 
     private var mBitmapPool: BitmapPool = Glide.get(context).bitmapPool
     private var radius: Float = radius
-    private var isLeftTop = false
-    private var isRightTop = false
-    private var isLeftBottom = false
-    private var isRightBotoom = false
+    private var isLeftTop = true
+    private var isRightTop = true
+    private var isLeftBottom = true
+    private var isRightBottom = true
 
     /**
      * 需要設定圓角的部份
@@ -35,7 +35,7 @@ class RoundedCornersTransform(context: Context, radius: Float): Transformation<B
         isLeftTop = leftTop
         isRightTop = rightTop
         isLeftBottom = leftBottom
-        isRightBotoom = rightBottom
+        isRightBottom = rightBottom
         return this
     }
 
@@ -113,7 +113,7 @@ class RoundedCornersTransform(context: Context, radius: Float): Transformation<B
             canvas.drawRect(0f, canvas.height - radius, radius, canvas.height.toFloat(), paint)
         }
         // 右下角圓角
-        if (!isRightBotoom) {
+        if (!isRightBottom) {
             canvas.drawRect(canvas.width - radius, canvas.height - radius, canvas.width.toFloat(), canvas.height.toFloat(), paint)
         }
 
