@@ -3,6 +3,7 @@ package com.cylin.clutils.view.utils
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.DimenRes
 
@@ -36,6 +37,15 @@ fun View.sp(value: Float): Int = context.sp(value)
 fun View.px2dip(px: Int): Float = context.px2dip(px)
 fun View.px2sp(px: Int): Float = context.px2sp(px)
 fun View.dimen(@DimenRes resource: Int): Int = context.dimen(resource)
+
+/**
+ * 隐藏 IME 视窗
+ */
+fun Context.hideIme(view: View) {
+    val imm: InputMethodManager =
+        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
 
 /**
  * 繪製客製化背景
