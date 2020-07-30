@@ -2,6 +2,7 @@ package com.cylin.clutils.view.utils
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
+import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -16,12 +17,10 @@ fun EditText.isTextEmpty(): Boolean {
 }
 
 //returns dip(dp) dimension value in pixels
-fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
-fun Context.dip(value: Float): Int = (value * resources.displayMetrics.density).toInt()
+fun Context.dp2Px(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
 
 //return sp dimension value in pixels
-fun Context.sp(value: Int): Int = (value * resources.displayMetrics.scaledDensity).toInt()
-fun Context.sp(value: Float): Int = (value * resources.displayMetrics.scaledDensity).toInt()
+fun Context.sp2Px(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, resources.displayMetrics)
 
 //converts px value into dip or sp
 fun Context.px2dip(px: Int): Float = px.toFloat() / resources.displayMetrics.density
@@ -30,10 +29,10 @@ fun Context.px2sp(px: Int): Float = px.toFloat() / resources.displayMetrics.scal
 fun Context.dimen(@DimenRes resource: Int): Int = resources.getDimensionPixelSize(resource)
 
 //the same for the views
-fun View.dip(value: Int): Int = context.dip(value)
-fun View.dip(value: Float): Int = context.dip(value)
-fun View.sp(value: Int): Int = context.sp(value)
-fun View.sp(value: Float): Int = context.sp(value)
+fun View.dip(value: Int): Float = context.dp2Px(value.toFloat())
+fun View.dip(value: Float): Float = context.dp2Px(value)
+fun View.sp(value: Int): Float = context.sp2Px(value.toFloat())
+fun View.sp(value: Float): Float = context.sp2Px(value)
 fun View.px2dip(px: Int): Float = context.px2dip(px)
 fun View.px2sp(px: Int): Float = context.px2sp(px)
 fun View.dimen(@DimenRes resource: Int): Int = context.dimen(resource)
@@ -66,7 +65,7 @@ fun View.setCustomDrawable(
     // 獲取oss顏色，預設是黄色
     var radiusArray = radius
     // 設定預設圆角大小
-    val defRadV = dip(defRadiusValue).toFloat()
+    val defRadV = dip(defRadiusValue)
     if (radiusArray == null || radiusArray.isEmpty()) {
         // 1.2：頂部左上角 3.4：頂部右上角 5.6：底部左下角 7.8：底部右下角
         radiusArray =
@@ -77,7 +76,7 @@ fun View.setCustomDrawable(
 
         strokeColor?.run {
             // 設定線的寬度、颜色 stroke
-            setStroke(dip(strokeWidth), strokeColor)
+            setStroke(dip(strokeWidth).toInt(), strokeColor)
         }
 
         solidColor?.run {
