@@ -63,3 +63,55 @@ fun String.copy(context: Context): Boolean {
         return false
     }
 }
+
+/**
+ * 字串轉 Double
+ *
+ * 遇空字串 返回 0.0
+ * NumberFormatException 返回 0.0
+ */
+fun String.cast2Double(): Double {
+    if (this.isEmpty()) {
+        return 0.0
+    }
+    return try {
+        this.toDouble()
+    } catch (e: NumberFormatException) {
+        0.0
+    }
+}
+
+/**
+ * 字串轉 Float
+ *
+ * 遇空字串 返回 0f
+ * NumberFormatException 返回 0f
+ */
+fun String.cast2Float(): Float {
+    if (this.isEmpty()) {
+        return 0f
+    }
+    return try {
+        this.toFloat()
+    } catch (e: NumberFormatException) {
+        0f
+    }
+}
+
+/**
+ * 字串轉 Int
+ *
+ * 遇空字串 返回 0
+ * NumberFormatException 返回 0
+ */
+fun String.cast2Int(): Int {
+    if (this.isEmpty()) {
+        return 0
+    }
+    return try {
+        this.toInt()
+    } catch (e: NumberFormatException) {
+        0
+    }
+}
+
