@@ -6,21 +6,22 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.annotation.ColorInt
 import androidx.annotation.IntRange
+import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.gson.Gson
 import java.util.*
 
 class RectDrawingView: AppCompatImageView {
 
-    constructor(context: Context?): super(context) {
+    constructor(@NonNull context: Context): super(context) {
         setupRectDrawing()
     }
 
-    constructor(context: Context?, attrs: AttributeSet?): super(context, attrs) {
+    constructor(@NonNull context: Context, attrs: AttributeSet?): super(context, attrs) {
         setupRectDrawing()
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr) {
+    constructor(@NonNull context: Context, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr) {
         setupRectDrawing()
     }
 
