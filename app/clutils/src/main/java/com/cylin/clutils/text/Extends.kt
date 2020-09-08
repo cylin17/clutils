@@ -3,6 +3,8 @@ package com.cylin.clutils.text
 import android.content.ClipboardManager
 import android.content.Context
 import android.util.Base64
+import java.math.BigDecimal
+import java.math.BigInteger
 import java.security.MessageDigest
 
 /**
@@ -115,3 +117,16 @@ fun String.cast2Int(): Int {
     }
 }
 
+inline fun <reified T> String.toDigit(): T {
+    var num = if (this.isEmpty()) "0" else this
+
+    return when (T::class) {
+        BigDecimal::class -> num.toBigDecimal() as T
+        BigInteger::class -> num.toBigInteger() as T
+        Double::class -> num.toDouble() as T
+        Float::class -> num.toFloat() as T
+        Int::class -> num.toInt() as T
+        Long::class -> num.toLong() as T
+        else -> throw IllegalStateException("Type not supported")
+    }
+}
