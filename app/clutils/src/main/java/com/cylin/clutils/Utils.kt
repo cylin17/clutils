@@ -7,8 +7,6 @@ import java.util.*
  * @Date on 2020-July-24
  * @Description
  */
-object CommonConfig {
-}
 
 val Any.TAG: String
     get() = this.javaClass.simpleName

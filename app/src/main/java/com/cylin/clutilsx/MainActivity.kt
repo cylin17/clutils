@@ -2,7 +2,6 @@ package com.cylin.clutilsx
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.cylin.clutils.className
 import com.cylin.clutils.clog
 import com.cylin.clutils.view.WaitingView
 
