@@ -2,6 +2,8 @@ package com.cylin.clutilsx
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.cylin.clutils.className
+import com.cylin.clutils.clog
 import com.cylin.clutils.view.WaitingView
 
 class MainActivity : AppCompatActivity() {
@@ -19,5 +21,12 @@ class MainActivity : AppCompatActivity() {
 //            .setBackgroundColor(Color.LTGRAY)
 //            .setWaitingText(R.string.app_name)
             .show()
+
+        clog(Test(), "data")
+        clog(123.4324)
     }
+
+    data class Test(
+        var text: String = "123"
+    )
 }

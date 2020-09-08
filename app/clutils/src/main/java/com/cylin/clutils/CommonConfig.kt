@@ -20,3 +20,12 @@ fun generateRandomColorHex(): String {
     val rndInt = Random().nextInt(0xffffff + 1)
     return String.format("#%06x", rndInt)
 }
+
+inline fun <reified T> T.className(): String {
+    return T::class.java.simpleName
+}
+
+inline fun <reified T> T.clog(msg: Any, prefix: String = "") {
+    val strPrefix = if (prefix.isNotEmpty()) "$prefix -> " else prefix
+    android.util.Log.d(className(), ">> $strPrefix$msg")
+}
