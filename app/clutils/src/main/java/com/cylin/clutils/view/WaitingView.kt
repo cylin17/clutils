@@ -2,7 +2,6 @@ package com.cylin.clutils.view
 
 import android.app.Activity
 import android.app.Dialog
-import android.graphics.Color
 import android.view.View
 import com.cylin.clutils.R
 import com.cylin.clutils.view.utils.setCustomDrawable

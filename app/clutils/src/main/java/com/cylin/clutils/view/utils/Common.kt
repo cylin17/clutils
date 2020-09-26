@@ -1,12 +1,17 @@
 package com.cylin.clutils.view.utils
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.DashPathEffect
+import android.graphics.Paint
 import android.graphics.drawable.GradientDrawable
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.DimenRes
+
 
 fun EditText.text2String(): String {
     return text.toString()
@@ -17,10 +22,18 @@ fun EditText.isTextEmpty(): Boolean {
 }
 
 //returns dip(dp) dimension value in pixels
-fun Context.dp2Px(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
+fun Context.dp2Px(value: Float): Float = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    value,
+    resources.displayMetrics
+)
 
 //return sp dimension value in pixels
-fun Context.sp2Px(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, resources.displayMetrics)
+fun Context.sp2Px(value: Float): Float = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_SP,
+    value,
+    resources.displayMetrics
+)
 
 //converts px value into dip or sp
 fun Context.px2dip(px: Int): Float = px.toFloat() / resources.displayMetrics.density
@@ -60,32 +73,87 @@ fun View.setCustomDrawable(
     strokeWidth: Float = 0f,
     defRadiusValue: Float = 8f,
     strokeColor: Int? = null,
-    solidColor: Int? = null
+    solidColor: Int? = null,
+    corners: Array<out Corner>? = null,
+    dashWidth: Float = 0f,
+    dashGap: Float = 0f,
 ): View {
-    // 獲取oss顏色，預設是黄色
-    var radiusArray = radius
-    // 設定預設圆角大小
-    val defRadV = dip(defRadiusValue)
-    if (radiusArray == null || radiusArray.isEmpty()) {
-        // 1.2：頂部左上角 3.4：頂部右上角 5.6：底部左下角 7.8：底部右下角
-        radiusArray =
-            floatArrayOf(defRadV, defRadV, defRadV, defRadV, defRadV, defRadV, defRadV, defRadV)
+    // 計算圓角大小
+    val defRadV = dip(defRadiusValue).toFloat()
+
+    // 存放 radius 的 array
+    var radiusArray: FloatArray = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+
+    // radius
+    radius?.apply {
+        forEachIndexed { index, fl ->
+            this[index] = dip(fl).toFloat()
+        }
+        radiusArray = this
     }
-    this.setBackgroundDrawable(GradientDrawable().apply {
+
+    if (radius == null) {
+        corners?.forEach {
+            when (it) {
+                Corner.TopLeft -> {
+                    radiusArray[0] = defRadV
+                    radiusArray[1] = defRadV
+                }
+                Corner.TopRight -> {
+                    radiusArray[2] = defRadV
+                    radiusArray[3] = defRadV
+                }
+                Corner.BottomLeft -> {
+                    radiusArray[4] = defRadV
+                    radiusArray[5] = defRadV
+                }
+                Corner.BottomRight -> {
+                    radiusArray[6] = defRadV
+                    radiusArray[7] = defRadV
+                }
+            }
+        }
+    }
+
+    if (radius == null && corners == null) {
+        //1.2顶部左上角 3.4 顶部右上角 5.6 底部左下角 7.8底部右下角
+        radiusArray = floatArrayOf(defRadV, defRadV, defRadV, defRadV, defRadV, defRadV, defRadV, defRadV)
+    }
+
+    setBackgroundDrawable(GradientDrawable().apply {
         shape = GradientDrawable.RECTANGLE
 
         strokeColor?.run {
-            // 設定線的寬度、颜色 stroke
-            setStroke(dip(strokeWidth).toInt(), strokeColor)
+            //设置线宽，线颜色 stroke
+            var gap = if (dashGap == 0f) {
+                dashWidth
+            } else {
+                dashGap
+            }
+            setStroke(dip(strokeWidth).toInt(), strokeColor, dip(dashWidth), dip(gap))
         }
 
         solidColor?.run {
-            // 設定圈内颜色 solidColor
+            //设置圈内颜色 solidColor
             setColor(solidColor)
         }
 
-        // 設定圓角
+        //设置圆角
         cornerRadii = radiusArray
     })
     return this
+}
+
+/**
+ * 四個角落
+ */
+enum class Corner {
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight
+}
+
+fun setCorners(vararg corners: Corner): Array<out Corner> {
+    return corners
 }
