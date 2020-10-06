@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -78,9 +79,18 @@ object PictureUtil {
     fun dispatchPickFromGalleryIntent(activity: Activity, fragment: Fragment? = null) {
 
         // Create an Intent with action as ACTION_PICK
-        val intent = Intent(Intent.ACTION_PICK)
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent(Intent.ACTION_OPEN_DOCUMENT)
+        } else {
+            Intent(Intent.ACTION_PICK)
+        }
+
         // Sets the type as image/*. This ensures only components of type image are selected
         intent.type = "image/*"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, intent.type)
+        }
+
         // Launching the Intent
         if (fragment == null) {
             activity.startActivityForResult(intent, GALLERY_REQUEST_CODE)
