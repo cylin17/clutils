@@ -10,10 +10,13 @@ import android.content.Context
  */
 interface IViewContract {
 
-    fun activity(): Activity
-    fun context(): Context
-    fun initView()
-    fun initEvent()
+    val context: Context
+        get() = act().applicationContext
 
-    fun showError(err: String)
+    fun act(): Activity
+    fun init()
+    fun initView() {}
+    fun initEvent() {}
+
+    fun showError(err: String?)
 }

@@ -24,7 +24,7 @@ inline fun <reified T> T.className(): String {
 }
 
 inline fun <reified T> T.clog(msg: Any?, prefix: String = "", isShowed: Boolean = true) {
-    if (BuildConfig.DEBUG || isShowed) {
+    if (BuildConfig.DEBUG || (!BuildConfig.DEBUG && isShowed)) {
         val strPrefix = if (prefix.isNotEmpty()) "$prefix -> " else prefix
         android.util.Log.d(className(), ">> $strPrefix$msg")
     }
